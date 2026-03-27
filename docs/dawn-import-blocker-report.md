@@ -1,71 +1,84 @@
-# Dawn Import Blocker Report
+# Dawn Import Technical Blocker Report
 
 Date (UTC): 2026-03-27
 Repository: `shopifai`
 
-## Phase 1 — Current repository diagnosis
+## 1. Current repo state
 
-- The repository is effectively empty/placeholder-only.
-- Present project files before import attempts:
+- Repository remains documentation-only.
+- Present project files at root:
   - `.gitkeep`
-- No existing docs, blocker reports, or implementation files were present to preserve or move.
+  - `MOTION_BLOCKER_REPORT.md`
+  - `docs/dawn-import-blocker-report.md`
+- No Shopify theme source directories exist at repository root:
+  - `assets/`
+  - `config/`
+  - `layout/`
+  - `locales/`
+  - `sections/`
+  - `snippets/`
+  - `templates/`
 
-## Phase 2 — Dawn import attempts
+## 2. Methods attempted
 
-I attempted to retrieve the official Dawn theme from Shopify using multiple official/public sources.
+All realistic non-fake Dawn retrieval methods available in this environment were retried:
 
-### Attempt A — Git clone (official Dawn repository)
+1. Git remote probe:
+   - `git ls-remote https://github.com/Shopify/dawn.git HEAD`
+2. Git shallow clone:
+   - `git clone --depth 1 https://github.com/Shopify/dawn.git /tmp/dawn-test`
+3. Git alternate fetch strategy (partial clone):
+   - `git clone --filter=blob:none --single-branch --branch main https://github.com/Shopify/dawn.git /tmp/dawn-test`
+4. Direct archive download from GitHub codeload:
+   - `curl -I -L --max-time 20 https://codeload.github.com/Shopify/dawn/tar.gz/refs/heads/main`
+5. npm registry fallback check:
+   - `npm view @shopify/dawn version`
+6. Local mirror/cache discovery:
+   - `find /workspace /opt -maxdepth 4 -type d \( -iname 'dawn' -o -iname 'shopify-dawn' -o -iname 'dawn-main' \)`
 
-Command:
+## 3. Exact errors encountered
 
-```bash
-git clone --depth 1 https://github.com/Shopify/dawn.git
-```
+- GitHub via git (all git methods):
+  - `fatal: unable to access 'https://github.com/Shopify/dawn.git/': CONNECT tunnel failed, response 403`
+- GitHub codeload via curl:
+  - `curl: (56) CONNECT tunnel failed, response 403`
+  - `HTTP/1.1 403 Forbidden`
+- npm registry:
+  - `npm ERR! code E403`
+  - `403 Forbidden - GET https://registry.npmjs.org/@shopify%2fdawn`
 
-Result:
+## 4. Blocker classification
 
-- Failed with: `fatal: unable to access 'https://github.com/Shopify/dawn.git/': CONNECT tunnel failed, response 403`
+Primary blocker is an environment-level outbound network/proxy access limitation.
 
-### Attempt B — Direct archive download from GitHub codeload
+Evidence:
+- Requests to multiple independent upstreams (github.com, codeload.github.com, registry.npmjs.org) all fail with HTTP 403 through the configured CONNECT tunnel/proxy.
+- Environment variables confirm forced proxy routing (`HTTP_PROXY`, `HTTPS_PROXY`, `http_proxy`, `https_proxy` set to `http://proxy:8080`).
 
-Command:
+This indicates a network policy restriction in the runtime environment, not a Dawn repository issue.
 
-```bash
-curl -I -L https://codeload.github.com/Shopify/dawn/tar.gz/refs/heads/main
-```
+## 5. Cached or alternate source availability
 
-Result:
+- No accessible local Dawn mirror or cached source was found under `/workspace` or `/opt` within practical search scope.
+- No internal preconfigured alternate source for Dawn is available in this environment.
 
-- Failed with: `curl: (56) CONNECT tunnel failed, response 403`
-- HTTP status returned by proxy/gateway: `403 Forbidden`
+## 6. Exact minimum missing requirement
 
-### Attempt C — npm registry fallback check
+At least one approved path to official Dawn source must be made available:
 
-Command:
-
-```bash
-npm view @shopify/dawn version
-```
-
-Result:
-
-- Failed with npm registry access denied: `E403 403 Forbidden - GET https://registry.npmjs.org/@shopify%2fdawn`
-
-## Import status
-
-- Dawn import **did not succeed**.
-- This appears to be a **network/access policy limitation** in the current execution environment, not a theme-structure issue.
-
-## Minimum requirement needed next
-
-To complete the Dawn-based pivot, one of the following is required:
-
-1. Outbound access to one of:
+1. Allow outbound access (through current proxy policy) to one of:
    - `https://github.com/Shopify/dawn.git`
    - `https://codeload.github.com/Shopify/dawn/...`
-   - an internal mirror containing Dawn source.
-2. Or a user-provided Dawn source bundle (zip/tar) copied into this repository workspace.
+2. Or provide an official Dawn source archive (zip/tar) directly in workspace.
+3. Or provide an approved internal mirror containing official Dawn source reachable from this environment.
 
-## Exact next Codex task once access is available
+Without one of the above, Dawn cannot be imported into this repository.
 
-"Import official Shopify Dawn into `/workspace/shopifai` root (no nested folder), verify the required Shopify theme directories (`assets`, `config`, `layout`, `locales`, `sections`, `snippets`, `templates`), then commit and open PR."
+## 7. Is Skeleton fallback technically justified now?
+
+Yes—Skeleton is now technically justified **only as a fallback recommendation** because:
+- Official Dawn import has been re-attempted using all realistic methods in this environment.
+- Every route is blocked by the same external 403 proxy policy.
+- No local/cached Dawn source is available.
+
+Skeleton should still not be imported unless explicitly requested.
