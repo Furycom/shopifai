@@ -1,0 +1,50 @@
+{% comment %}
+  SLICKWEAR — Scrolling Text Band Section
+  Ajouter dans l'admin Shopify via l'éditeur de thème
+{% endcomment %}
+
+<div class="sf-textband">
+  <div class="sf-textband__track">
+    {% for i in (1..8) %}
+      <span class="sf-textband__item">SLICKWEAR</span>
+      <span class="sf-textband__item sf-textband__item--accent">✦</span>
+      <span class="sf-textband__item">New Collection</span>
+      <span class="sf-textband__item sf-textband__item--accent">✦</span>
+      <span class="sf-textband__item">Drop Season</span>
+      <span class="sf-textband__item sf-textband__item--accent">✦</span>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Text Band",
+  "tag": "section",
+  "class": "section-textband",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Text item 1",
+      "default": "SLICKWEAR"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Text item 2",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Text item 3",
+      "default": "Drop Season"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Text Band"
+    }
+  ]
+}
+{% endschema %}
