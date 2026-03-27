@@ -1,0 +1,223 @@
+{% comment %}
+  SLICKWEAR — Hero Placeholder Section
+  Plein écran, dark gradient, wordmark centré + CTA
+  Remplacer l'image par une vraie photo dans l'admin Shopify
+{% endcomment %}
+
+<style>
+  .sw-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background: #111111;
+  }
+  .sw-hero__bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(224,255,79,0.04) 0%, transparent 60%),
+      linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 50%, #080808 100%);
+  }
+  /* Grid texture overlay */
+  .sw-hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.4) 80%, transparent 100%);
+  }
+  .sw-hero__logo-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+    font-size: clamp(8rem, 25vw, 30rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .sw-hero__content {
+    position: relative;
+    z-index: 2;
+    padding: clamp(3rem,6vw,6rem) clamp(1.5rem,4vw,4rem);
+    width: 100%;
+  }
+  .sw-hero__eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #e0ff4f;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .sw-hero__eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: #e0ff4f;
+  }
+  .sw-hero__title {
+    font-family: 'Bebas Neue', 'Arial Black', sans-serif !important;
+    font-size: clamp(4.5rem, 14vw, 17rem) !important;
+    line-height: 0.88 !important;
+    letter-spacing: -0.01em;
+    color: #f5f5f5 !important;
+    text-transform: uppercase;
+    max-width: 12ch;
+    margin: 0 0 3rem;
+    font-weight: 400 !important;
+  }
+  .sw-hero__title em {
+    font-style: normal;
+    color: #e0ff4f;
+  }
+  .sw-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .sw-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 1.1rem 2.8rem;
+    background: #e0ff4f;
+    color: #080808;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+  }
+  .sw-hero__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(224,255,79,0.2);
+    color: #080808;
+  }
+  .sw-hero__cta--ghost {
+    background: transparent;
+    color: #f5f5f5;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .sw-hero__cta--ghost:hover {
+    border-color: #e0ff4f;
+    color: #e0ff4f;
+    box-shadow: none;
+  }
+  .sw-hero__scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: clamp(1.5rem,4vw,4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 3;
+  }
+  .sw-hero__scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, #e0ff4f, transparent);
+    animation: swScrollPulse 2s ease-in-out infinite;
+  }
+  .sw-hero__scroll-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #555555;
+    writing-mode: vertical-rl;
+  }
+  @keyframes swScrollPulse {
+    0%,100% { opacity: 0.35; transform: scaleY(1); }
+    50%      { opacity: 1; transform: scaleY(0.65); }
+  }
+  @media (max-width: 768px) {
+    .sw-hero__title { font-size: clamp(3.5rem,16vw,7rem) !important; }
+    .sw-hero__logo-bg { display: none; }
+  }
+</style>
+
+<section class="sw-hero">
+  <div class="sw-hero__bg"></div>
+  <div class="sw-hero__logo-bg" aria-hidden="true">SW</div>
+
+  <div class="sw-hero__content">
+    <p class="sw-hero__eyebrow">SS {{ 'now' | date: '%Y' }} Collection</p>
+    <h1 class="sw-hero__title">Wear The <em>Street.</em></h1>
+    <div class="sw-hero__actions">
+      <a href="/collections/all" class="sw-hero__cta">Shop Now</a>
+      <a href="/collections" class="sw-hero__cta sw-hero__cta--ghost">Explore Collections</a>
+    </div>
+  </div>
+
+  <div class="sw-hero__scroll" aria-hidden="true">
+    <div class="sw-hero__scroll-line"></div>
+    <span class="sw-hero__scroll-label">Scroll</span>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SlickWear Hero",
+  "tag": "section",
+  "class": "section-sw-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading_line1",
+      "label": "Heading line 1",
+      "default": "Wear The"
+    },
+    {
+      "type": "text",
+      "id": "heading_line2",
+      "label": "Heading line 2 (accent)",
+      "default": "Street."
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Primary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Primary CTA label",
+      "default": "Shop Now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SlickWear Hero"
+    }
+  ]
+}
+{% endschema %}
